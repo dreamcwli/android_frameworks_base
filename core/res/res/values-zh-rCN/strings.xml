@@ -1456,4 +1456,11 @@
     <string name="enable_accessibility_canceled" msgid="3833923257966635673">"已取消辅助功能。"</string>
     <string name="user_switched" msgid="3768006783166984410">"当前用户是<xliff:g id="NAME">%1$s</xliff:g>。"</string>
     <string name="owner_name" msgid="2716755460376028154">"机主"</string>
+    <string name="global_action_reboot">"重新启动"</string>
+    <string name="global_action_reboot_recovery">"恢复模式"</string>
+    <string name="global_action_reboot_bootloader">"引导程序"</string>
+    <string name="reboot">"重新启动"</string>
+    <string name="reboot_progress">"正在重新启动..."</string>
+    <string name="reboot_confirm" product="tablet">"您的平板电脑会重新启动。"</string>
+    <string name="reboot_confirm" product="default">"您的手机将会重新启动。"</string>
 </resources>

@@ -1456,4 +1456,11 @@
     <string name="enable_accessibility_canceled" msgid="3833923257966635673">"協助工具已取消。"</string>
     <string name="user_switched" msgid="3768006783166984410">"目前的使用者是 <xliff:g id="NAME">%1$s</xliff:g>。"</string>
     <string name="owner_name" msgid="2716755460376028154">"擁有者"</string>
+    <string name="global_action_reboot">"重新啟動"</string>
+    <string name="global_action_reboot_recovery">"還原模式"</string>
+    <string name="global_action_reboot_bootloader">"開機管理模式"</string>
+    <string name="reboot">"重新啟動"</string>
+    <string name="reboot_progress">"重新啟動中…"</string>
+    <string name="reboot_confirm" product="tablet">"您的平板電腦將會重新啟動。"</string>
+    <string name="reboot_confirm" product="default">"手機即將重新啟動。"</string>
 </resources>

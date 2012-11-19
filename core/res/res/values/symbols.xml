@@ -862,6 +862,11 @@
   <java-symbol type="string" name="media_route_status_available" />
   <java-symbol type="string" name="media_route_status_not_available" />
   <java-symbol type="string" name="owner_name" />
+  <java-symbol type="string" name="reboot" />
+  <java-symbol type="string" name="reboot_progress" />
+  <java-symbol type="string" name="reboot_confirm" />
+  <java-symbol type="string" name="reboot_reason_recovery" />
+  <java-symbol type="string" name="reboot_reason_bootloader" />
 
   <java-symbol type="plurals" name="abbrev_in_num_days" />
   <java-symbol type="plurals" name="abbrev_in_num_hours" />
@@ -1491,6 +1496,9 @@
   <java-symbol type="string" name="kg_enter_confirm_pin_hint" />
   <java-symbol type="string" name="kg_invalid_confirm_pin_hint" />
   <java-symbol type="string" name="kg_text_message_separator" />
+  <java-symbol type="string" name="global_action_reboot" />
+  <java-symbol type="string" name="global_action_reboot_recovery" />
+  <java-symbol type="string" name="global_action_reboot_bootloader" />
 
   <!-- From services -->
   <java-symbol type="anim" name="screen_rotate_0_enter" />
