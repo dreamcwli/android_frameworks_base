@@ -1499,6 +1499,7 @@
   <java-symbol type="string" name="global_action_reboot" />
   <java-symbol type="string" name="global_action_reboot_recovery" />
   <java-symbol type="string" name="global_action_reboot_bootloader" />
+  <java-symbol type="string" name="global_action_screenshot" />
 
   <!-- From services -->
   <java-symbol type="anim" name="screen_rotate_0_enter" />

@@ -4026,4 +4026,7 @@
     <!-- Reboot Confirmation Dialog.  When the user chooses to restart the phone, there will
          be a confirmation dialog.  This is the message. -->
     <string name="reboot_confirm" product="default">Your phone will reboot.</string>
+
+    <!-- label for item that takes screenshot in phone options dialog -->
+    <string name="global_action_screenshot">Screenshot</string>
 </resources>

@@ -1463,4 +1463,5 @@
     <string name="reboot_progress">"重新啟動中…"</string>
     <string name="reboot_confirm" product="tablet">"您的平板電腦將會重新啟動。"</string>
     <string name="reboot_confirm" product="default">"手機即將重新啟動。"</string>
+    <string name="global_action_screenshot">"螢幕擷圖"</string>
 </resources>
