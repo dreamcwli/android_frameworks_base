@@ -98,6 +98,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private boolean mKeyguardShowing = false;
     private boolean mDeviceProvisioned = false;
+    private boolean mReboot = false;
     private ToggleAction.State mAirplaneState = ToggleAction.State.Off;
     private boolean mIsWaitingForEcmExit = false;
     private boolean mHasTelephony;
@@ -139,8 +140,13 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
      * @param keyguardShowing True if keyguard is showing
      */
     public void showDialog(boolean keyguardShowing, boolean isDeviceProvisioned) {
+        showDialog(keyguardShowing, isDeviceProvisioned, false);
+    }
+
+    public void showDialog(boolean keyguardShowing, boolean isDeviceProvisioned, boolean reboot) {
         mKeyguardShowing = keyguardShowing;
         mDeviceProvisioned = isDeviceProvisioned;
+        mReboot = reboot;
         if (mDialog != null) {
             mDialog.dismiss();
             mDialog = null;
@@ -180,6 +186,40 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
      * @return A new dialog.
      */
     private GlobalActionsDialog createDialog() {
+        if (mReboot) {
+            createRebootMenuItems();
+        } else {
+            createPowerMenuItems();
+        }
+
+        mAdapter = new MyAdapter();
+
+        AlertParams params = new AlertParams(mContext);
+        params.mAdapter = mAdapter;
+        params.mOnClickListener = this;
+        params.mForceInverseBackground = true;
+
+        GlobalActionsDialog dialog = new GlobalActionsDialog(mContext, params);
+        dialog.setCanceledOnTouchOutside(false); // Handled by the custom class.
+
+        dialog.getListView().setItemsCanFocus(true);
+        dialog.getListView().setLongClickable(true);
+        dialog.getListView().setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+                        return mAdapter.getItem(position).onLongPress();
+                    }
+        });
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+
+        dialog.setOnDismissListener(this);
+
+        return dialog;
+    }
+
+    private void createPowerMenuItems() {
         // Simple toggle style if there's no vibrator, otherwise use a tri-state
         if (!mHasVibrator) {
             mSilentModeAction = new SilentModeToggleAction();
@@ -256,6 +296,25 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             });
 
+        // next: reboot
+        mItems.add(
+            new SinglePressAction(
+                    com.android.internal.R.drawable.ic_lock_reboot,
+                    R.string.global_action_reboot) {
+
+                public void onPress() {
+                    showDialog(mKeyguardShowing, mDeviceProvisioned, true);
+                }
+
+                public boolean showDuringKeyguard() {
+                    return true;
+                }
+
+                public boolean showBeforeProvisioning() {
+                    return true;
+                }
+            });
+
         // next: airplane mode
         mItems.add(mAirplaneModeOn);
 
@@ -317,32 +376,68 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         if (SystemProperties.getBoolean("fw.power_user_switcher", false)) {
             addUsersToMenu(mItems);
         }
+    }
 
-        mAdapter = new MyAdapter();
+    private void createRebootMenuItems() {
+        mItems = new ArrayList<Action>();
 
-        AlertParams params = new AlertParams(mContext);
-        params.mAdapter = mAdapter;
-        params.mOnClickListener = this;
-        params.mForceInverseBackground = true;
+        mItems.add(
+            new SinglePressAction(
+                    com.android.internal.R.drawable.ic_lock_reboot,
+                    R.string.global_action_reboot) {
 
-        GlobalActionsDialog dialog = new GlobalActionsDialog(mContext, params);
-        dialog.setCanceledOnTouchOutside(false); // Handled by the custom class.
+                public void onPress() {
+                    mWindowManagerFuncs.reboot(null, false);
+                }
 
-        dialog.getListView().setItemsCanFocus(true);
-        dialog.getListView().setLongClickable(true);
-        dialog.getListView().setOnItemLongClickListener(
-                new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
-                            long id) {
-                        return mAdapter.getItem(position).onLongPress();
-                    }
-        });
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+                public boolean showDuringKeyguard() {
+                    return true;
+                }
 
-        dialog.setOnDismissListener(this);
+                public boolean showBeforeProvisioning() {
+                    return true;
+                }
+            });
 
-        return dialog;
+        mItems.add(
+            new SinglePressAction(
+                    com.android.internal.R.drawable.ic_lock_reboot_recovery,
+                    R.string.global_action_reboot_recovery) {
+
+                public void onPress() {
+                    mWindowManagerFuncs.reboot(
+                            mContext.getResources().getString(R.string.reboot_reason_recovery),
+                            false);
+                }
+
+                public boolean showDuringKeyguard() {
+                    return true;
+                }
+
+                public boolean showBeforeProvisioning() {
+                    return true;
+                }
+            });
+
+        mItems.add(
+            new SinglePressAction(
+                    com.android.internal.R.drawable.ic_lock_reboot_bootloader,
+                    R.string.global_action_reboot_bootloader) {
+
+                public void onPress() {
+                    mWindowManagerFuncs.reboot(
+                            mContext.getResources().getString(R.string.reboot_reason_bootloader),
+                            false);
+                }
+
+                public boolean showDuringKeyguard() {
+                    return true;
+                }
+
+                public boolean showBeforeProvisioning() {
+                    return true;
+                }
+            });
     }
 
     private void addUsersToMenu(ArrayList<Action> items) {

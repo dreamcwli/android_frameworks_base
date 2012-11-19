@@ -26,4 +26,8 @@
     <string name="lock_pattern_view_aspect">square</string>
     <!-- @hide DO NOT TRANSLATE. Separator between the hour and minute elements in a TimePicker widget -->
     <string name="time_picker_separator">:</string>
+    <!-- @hide DO NOT TRANSLATE. Reboot reason for rebooting to bootloader -->
+    <string name="reboot_reason_bootloader">bootloader</string>
+    <!-- @hide DO NOT TRANSLATE. Reboot reason for rebooting to recovery -->
+    <string name="reboot_reason_recovery">recovery</string>
 </resources>
