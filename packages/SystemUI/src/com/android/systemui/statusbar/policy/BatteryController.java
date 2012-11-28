@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.SystemProperties;
 import android.util.Slog;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -78,9 +79,12 @@ public class BatteryController extends BroadcastReceiver {
                     plugged = true;
                     break;
             }
-
-            final int icon = plugged ? R.drawable.stat_sys_battery_charge
-                                     : R.drawable.stat_sys_battery;
+            final boolean sysbar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
+            final int icon = plugged
+                    ? (sysbar ? R.drawable.ic_sysbar_battery_charge
+                              : R.drawable.stat_sys_battery_charge)
+                    : (sysbar ? R.drawable.ic_sysbar_battery
+                              : R.drawable.stat_sys_battery);
 
             int N = mIconViews.size();
             for (int i=0; i<N; i++) {

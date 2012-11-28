@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.UserHandle;
+import android.os.SystemProperties;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Slog;
@@ -66,7 +67,10 @@ public class StatusBarIconView extends AnimatedImageView {
         // left).
         if (notification != null) {
             final int outerBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_size);
-            final int imageBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_drawing_size);
+            final int imageBounds = res.getDimensionPixelSize(
+                    SystemProperties.getBoolean("persist.sys.ui.sysbar", false)
+                            ? R.dimen.system_bar_icon_drawing_size
+                            : R.dimen.status_bar_icon_drawing_size);
             final float scale = (float)imageBounds / (float)outerBounds;
             setScaleX(scale);
             setScaleY(scale);
@@ -81,7 +85,10 @@ public class StatusBarIconView extends AnimatedImageView {
         super(context, attrs);
         final Resources res = context.getResources();
         final int outerBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_size);
-        final int imageBounds = res.getDimensionPixelSize(R.dimen.status_bar_icon_drawing_size);
+        final int imageBounds = res.getDimensionPixelSize(
+                SystemProperties.getBoolean("persist.sys.ui.sysbar", false)
+                        ? R.dimen.system_bar_icon_drawing_size
+                        : R.dimen.status_bar_icon_drawing_size);
         final float scale = (float)imageBounds / (float)outerBounds;
         setScaleX(scale);
         setScaleY(scale);

@@ -32,10 +32,30 @@ class TelephonyIcons {
           R.drawable.stat_sys_signal_1_fully,
           R.drawable.stat_sys_signal_2_fully,
           R.drawable.stat_sys_signal_3_fully,
-          R.drawable.stat_sys_signal_4_fully }
+          R.drawable.stat_sys_signal_4_fully },
+        { R.drawable.ic_sysbar_signal_0,
+          R.drawable.ic_sysbar_signal_1,
+          R.drawable.ic_sysbar_signal_2,
+          R.drawable.ic_sysbar_signal_3,
+          R.drawable.ic_sysbar_signal_4 },
+        { R.drawable.ic_sysbar_signal_0_fully,
+          R.drawable.ic_sysbar_signal_1_fully,
+          R.drawable.ic_sysbar_signal_2_fully,
+          R.drawable.ic_sysbar_signal_3_fully,
+          R.drawable.ic_sysbar_signal_4_fully }
     };
 
     static final int[][] QS_TELEPHONY_SIGNAL_STRENGTH = {
+        { R.drawable.ic_qs_signal_0,
+          R.drawable.ic_qs_signal_1,
+          R.drawable.ic_qs_signal_2,
+          R.drawable.ic_qs_signal_3,
+          R.drawable.ic_qs_signal_4 },
+        { R.drawable.ic_qs_signal_full_0,
+          R.drawable.ic_qs_signal_full_1,
+          R.drawable.ic_qs_signal_full_2,
+          R.drawable.ic_qs_signal_full_3,
+          R.drawable.ic_qs_signal_full_4 },
         { R.drawable.ic_qs_signal_0,
           R.drawable.ic_qs_signal_1,
           R.drawable.ic_qs_signal_2,
@@ -58,7 +78,17 @@ class TelephonyIcons {
           R.drawable.stat_sys_signal_1_fully,
           R.drawable.stat_sys_signal_2_fully,
           R.drawable.stat_sys_signal_3_fully,
-          R.drawable.stat_sys_signal_4_fully }
+          R.drawable.stat_sys_signal_4_fully },
+        { R.drawable.ic_sysbar_signal_0,
+          R.drawable.ic_sysbar_signal_1,
+          R.drawable.ic_sysbar_signal_2,
+          R.drawable.ic_sysbar_signal_3,
+          R.drawable.ic_sysbar_signal_4 },
+        { R.drawable.ic_sysbar_signal_0_fully,
+          R.drawable.ic_sysbar_signal_1_fully,
+          R.drawable.ic_sysbar_signal_2_fully,
+          R.drawable.ic_sysbar_signal_3_fully,
+          R.drawable.ic_sysbar_signal_4_fully }
     };
 
     static final int[][] DATA_SIGNAL_STRENGTH = TELEPHONY_SIGNAL_STRENGTH;
@@ -74,7 +104,15 @@ class TelephonyIcons {
             { R.drawable.stat_sys_data_fully_connected_g,
               R.drawable.stat_sys_data_fully_connected_g,
               R.drawable.stat_sys_data_fully_connected_g,
-              R.drawable.stat_sys_data_fully_connected_g }
+              R.drawable.stat_sys_data_fully_connected_g },
+            { R.drawable.ic_sysbar_data_connected_g,
+              R.drawable.ic_sysbar_data_connected_g,
+              R.drawable.ic_sysbar_data_connected_g,
+              R.drawable.ic_sysbar_data_connected_g },
+            { R.drawable.ic_sysbar_data_fully_connected_g,
+              R.drawable.ic_sysbar_data_fully_connected_g,
+              R.drawable.ic_sysbar_data_fully_connected_g,
+              R.drawable.ic_sysbar_data_fully_connected_g }
         };
 
     static final int[][] DATA_3G = {
@@ -85,7 +123,15 @@ class TelephonyIcons {
             { R.drawable.stat_sys_data_fully_connected_3g,
               R.drawable.stat_sys_data_fully_connected_3g,
               R.drawable.stat_sys_data_fully_connected_3g,
-              R.drawable.stat_sys_data_fully_connected_3g }
+              R.drawable.stat_sys_data_fully_connected_3g },
+            { R.drawable.ic_sysbar_data_connected_3g,
+              R.drawable.ic_sysbar_data_connected_3g,
+              R.drawable.ic_sysbar_data_connected_3g,
+              R.drawable.ic_sysbar_data_connected_3g },
+            { R.drawable.ic_sysbar_data_fully_connected_3g,
+              R.drawable.ic_sysbar_data_fully_connected_3g,
+              R.drawable.ic_sysbar_data_fully_connected_3g,
+              R.drawable.ic_sysbar_data_fully_connected_3g }
         };
 
     static final int[][] DATA_E = {
@@ -96,7 +142,15 @@ class TelephonyIcons {
             { R.drawable.stat_sys_data_fully_connected_e,
               R.drawable.stat_sys_data_fully_connected_e,
               R.drawable.stat_sys_data_fully_connected_e,
-              R.drawable.stat_sys_data_fully_connected_e }
+              R.drawable.stat_sys_data_fully_connected_e },
+            { R.drawable.ic_sysbar_data_connected_e,
+              R.drawable.ic_sysbar_data_connected_e,
+              R.drawable.ic_sysbar_data_connected_e,
+              R.drawable.ic_sysbar_data_connected_e },
+            { R.drawable.ic_sysbar_data_fully_connected_e,
+              R.drawable.ic_sysbar_data_fully_connected_e,
+              R.drawable.ic_sysbar_data_fully_connected_e,
+              R.drawable.ic_sysbar_data_fully_connected_e }
         };
 
     //3.5G
@@ -108,7 +162,15 @@ class TelephonyIcons {
             { R.drawable.stat_sys_data_fully_connected_h,
               R.drawable.stat_sys_data_fully_connected_h,
               R.drawable.stat_sys_data_fully_connected_h,
-              R.drawable.stat_sys_data_fully_connected_h }
+              R.drawable.stat_sys_data_fully_connected_h },
+            { R.drawable.ic_sysbar_data_connected_h,
+              R.drawable.ic_sysbar_data_connected_h,
+              R.drawable.ic_sysbar_data_connected_h,
+              R.drawable.ic_sysbar_data_connected_h },
+            { R.drawable.ic_sysbar_data_fully_connected_h,
+              R.drawable.ic_sysbar_data_fully_connected_h,
+              R.drawable.ic_sysbar_data_fully_connected_h,
+              R.drawable.ic_sysbar_data_fully_connected_h }
     };
 
     //CDMA
@@ -121,7 +183,15 @@ class TelephonyIcons {
             { R.drawable.stat_sys_data_fully_connected_1x,
               R.drawable.stat_sys_data_fully_connected_1x,
               R.drawable.stat_sys_data_fully_connected_1x,
-              R.drawable.stat_sys_data_fully_connected_1x }
+              R.drawable.stat_sys_data_fully_connected_1x },
+            { R.drawable.ic_sysbar_data_connected_1x,
+              R.drawable.ic_sysbar_data_connected_1x,
+              R.drawable.ic_sysbar_data_connected_1x,
+              R.drawable.ic_sysbar_data_connected_1x },
+            { R.drawable.ic_sysbar_data_fully_connected_1x,
+              R.drawable.ic_sysbar_data_fully_connected_1x,
+              R.drawable.ic_sysbar_data_fully_connected_1x,
+              R.drawable.ic_sysbar_data_fully_connected_1x }
             };
 
     // LTE and eHRPD
@@ -133,7 +203,15 @@ class TelephonyIcons {
             { R.drawable.stat_sys_data_fully_connected_4g,
               R.drawable.stat_sys_data_fully_connected_4g,
               R.drawable.stat_sys_data_fully_connected_4g,
-              R.drawable.stat_sys_data_fully_connected_4g }
+              R.drawable.stat_sys_data_fully_connected_4g },
+            { R.drawable.ic_sysbar_data_connected_4g,
+              R.drawable.ic_sysbar_data_connected_4g,
+              R.drawable.ic_sysbar_data_connected_4g,
+              R.drawable.ic_sysbar_data_connected_4g },
+            { R.drawable.ic_sysbar_data_fully_connected_4g,
+              R.drawable.ic_sysbar_data_fully_connected_4g,
+              R.drawable.ic_sysbar_data_fully_connected_4g,
+              R.drawable.ic_sysbar_data_fully_connected_4g }
         };
 
 

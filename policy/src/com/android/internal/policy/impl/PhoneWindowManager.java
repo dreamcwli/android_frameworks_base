@@ -1010,8 +1010,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mHasSystemNavBar = false;
             mNavigationBarCanMove = true;
         } else {
-            // 720+dp: "phone" UI with modifications for larger screens
-            mHasSystemNavBar = false;
+            // 720+dp: "phone" UI with modifications for larger screens or
+            //         "tablet" UI with a single combined status & navigation bar
+            mHasSystemNavBar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
             mNavigationBarCanMove = false;
         }
 

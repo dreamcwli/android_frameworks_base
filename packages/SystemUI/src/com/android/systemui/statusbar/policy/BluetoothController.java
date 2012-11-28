@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.SystemProperties;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -38,7 +39,7 @@ public class BluetoothController extends BroadcastReceiver {
     private Context mContext;
     private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
 
-    private int mIconId = R.drawable.stat_sys_data_bluetooth;
+    private int mIconId;
     private int mContentDescriptionId = 0;
     private boolean mEnabled = false;
 
@@ -47,8 +48,13 @@ public class BluetoothController extends BroadcastReceiver {
     private ArrayList<BluetoothStateChangeCallback> mChangeCallbacks =
             new ArrayList<BluetoothStateChangeCallback>();
 
+    private boolean mUseSystemBar;
+
     public BluetoothController(Context context) {
         mContext = context;
+        mUseSystemBar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
+        mIconId = mUseSystemBar
+                ? R.drawable.ic_sysbar_data_bluetooth : R.drawable.stat_sys_data_bluetooth;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -118,10 +124,14 @@ public class BluetoothController extends BroadcastReceiver {
     public void handleConnectionStateChange(int connectionState) {
         final boolean connected = (connectionState == BluetoothAdapter.STATE_CONNECTED);
         if (connected) {
-            mIconId = R.drawable.stat_sys_data_bluetooth_connected;
+            mIconId = mUseSystemBar
+                    ? R.drawable.ic_sysbar_data_bluetooth_connected
+                    : R.drawable.stat_sys_data_bluetooth_connected;
             mContentDescriptionId = R.string.accessibility_bluetooth_connected;
         } else {
-            mIconId = R.drawable.stat_sys_data_bluetooth;
+            mIconId = mUseSystemBar
+                    ? R.drawable.ic_sysbar_data_bluetooth
+                    : R.drawable.stat_sys_data_bluetooth;
             mContentDescriptionId = R.string.accessibility_bluetooth_disconnected;
         }
     }
