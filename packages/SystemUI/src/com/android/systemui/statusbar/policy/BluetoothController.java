@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.SystemProperties;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -38,7 +39,7 @@ public class BluetoothController extends BroadcastReceiver {
     private Context mContext;
     private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
 
-    private int mIconId = R.drawable.stat_sys_data_bluetooth;
+    private int mIconId;
     private int mContentDescriptionId = 0;
     private boolean mEnabled = false;
 
@@ -49,6 +50,9 @@ public class BluetoothController extends BroadcastReceiver {
 
     public BluetoothController(Context context) {
         mContext = context;
+        mIconId = SystemProperties.getBoolean("persist.sys.ui.sysbar", false)
+                ? R.drawable.ic_sysbar_data_bluetooth
+                : R.drawable.stat_sys_data_bluetooth;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -117,11 +121,14 @@ public class BluetoothController extends BroadcastReceiver {
 
     public void handleConnectionStateChange(int connectionState) {
         final boolean connected = (connectionState == BluetoothAdapter.STATE_CONNECTED);
+        final boolean sysbar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
         if (connected) {
-            mIconId = R.drawable.stat_sys_data_bluetooth_connected;
+            mIconId = sysbar ? R.drawable.ic_sysbar_data_bluetooth
+                             : R.drawable.stat_sys_data_bluetooth_connected;
             mContentDescriptionId = R.string.accessibility_bluetooth_connected;
         } else {
-            mIconId = R.drawable.stat_sys_data_bluetooth;
+            mIconId = sysbar ? R.drawable.ic_sysbar_data_bluetooth
+                             : R.drawable.stat_sys_data_bluetooth;
             mContentDescriptionId = R.string.accessibility_bluetooth_disconnected;
         }
     }
