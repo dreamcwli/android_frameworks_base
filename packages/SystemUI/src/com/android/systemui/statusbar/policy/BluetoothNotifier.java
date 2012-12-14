@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BluetoothController extends BroadcastReceiver {
-    private static final String TAG = "StatusBar.BluetoothController";
+public class BluetoothNotifier extends BroadcastReceiver {
+    private static final String TAG = "StatusBar.BluetoothNotifier";
 
     private Context mContext;
     private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
@@ -48,7 +48,7 @@ public class BluetoothController extends BroadcastReceiver {
     private ArrayList<BluetoothStateChangeCallback> mChangeCallbacks =
             new ArrayList<BluetoothStateChangeCallback>();
 
-    public BluetoothController(Context context) {
+    public BluetoothNotifier(Context context) {
         mContext = context;
         mIconId = SystemProperties.getBoolean("persist.sys.ui.sysbar", false)
                 ? R.drawable.ic_sysbar_data_bluetooth

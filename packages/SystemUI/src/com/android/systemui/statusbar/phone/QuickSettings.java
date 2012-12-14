@@ -26,7 +26,7 @@ import com.android.systemui.statusbar.phone.QuickSettingsModel.State;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.UserState;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.WifiState;
 import com.android.systemui.statusbar.policy.BatteryController;
-import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.BluetoothNotifier;
 import com.android.systemui.statusbar.policy.BrightnessController;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
@@ -96,7 +96,7 @@ class QuickSettings {
     private BluetoothState mBluetoothState;
 
     private BrightnessController mBrightnessController;
-    private BluetoothController mBluetoothController;
+    private BluetoothNotifier mBluetoothNotifier;
 
     private Dialog mBrightnessDialog;
     private int mBrightnessDialogShortTimeout;
@@ -172,16 +172,16 @@ class QuickSettings {
         mModel.onImeWindowStatusChanged(visible);
     }
 
-    void setup(NetworkController networkController, BluetoothController bluetoothController,
+    void setup(NetworkController networkController, BluetoothNotifier bluetoothNotifier,
             BatteryController batteryController, LocationController locationController) {
-        mBluetoothController = bluetoothController;
+        mBluetoothNotifier = bluetoothNotifier;
 
         setupQuickSettings();
         updateWifiDisplayStatus();
         updateResources();
 
         networkController.addNetworkSignalChangedCallback(mModel);
-        bluetoothController.addStateChangedCallback(mModel);
+        bluetoothNotifier.addStateChangedCallback(mModel);
         batteryController.addStateChangedCallback(mModel);
         locationController.addStateChangedCallback(mModel);
         RotationPolicy.registerRotationPolicyListener(mContext, mRotationPolicyListener,

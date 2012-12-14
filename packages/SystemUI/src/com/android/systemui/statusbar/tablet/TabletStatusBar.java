@@ -68,7 +68,7 @@ import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
 import com.android.systemui.statusbar.policy.BatteryController;
-import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.BluetoothNotifier;
 import com.android.systemui.statusbar.policy.CompatModeButton;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
@@ -149,7 +149,7 @@ public class TabletStatusBar extends BaseStatusBar implements
     int mNotificationFlingVelocity;
 
     BatteryController mBatteryController;
-    BluetoothController mBluetoothController;
+    BluetoothNotifier mBluetoothNotifier;
     LocationController mLocationController;
     NetworkController mNetworkController;
     DoNotDisturb mDoNotDisturb;
@@ -254,7 +254,7 @@ public class TabletStatusBar extends BaseStatusBar implements
                 (TextView)mNotificationPanel.findViewById(R.id.battery_text));
 
         // Bt
-        mBluetoothController.addIconView(
+        mBluetoothNotifier.addIconView(
                 (ImageView)mNotificationPanel.findViewById(R.id.bluetooth));
 
         // network icons: either a combo icon that switches between mobile and data, or distinct
@@ -488,8 +488,8 @@ public class TabletStatusBar extends BaseStatusBar implements
 
         mBatteryController = new BatteryController(mContext);
         mBatteryController.addIconView((ImageView)sb.findViewById(R.id.battery));
-        mBluetoothController = new BluetoothController(mContext);
-        mBluetoothController.addIconView((ImageView)sb.findViewById(R.id.bluetooth));
+        mBluetoothNotifier = new BluetoothNotifier(mContext);
+        mBluetoothNotifier.addIconView((ImageView)sb.findViewById(R.id.bluetooth));
 
         mNetworkController = new NetworkController(mContext);
         final SignalClusterView signalCluster =

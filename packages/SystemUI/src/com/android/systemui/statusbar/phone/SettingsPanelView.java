@@ -31,7 +31,7 @@ import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.GestureRecorder;
 import com.android.systemui.statusbar.policy.BatteryController;
-import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.BluetoothNotifier;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
 
@@ -81,11 +81,10 @@ public class SettingsPanelView extends PanelView {
         }
     }
 
-    public void setup(NetworkController networkController, BluetoothController bluetoothController,
+    public void setup(NetworkController networkController, BluetoothNotifier bluetoothNotifier,
             BatteryController batteryController, LocationController locationController) {
         if (mQS != null) {
-            mQS.setup(networkController, bluetoothController, batteryController,
-                    locationController);
+            mQS.setup(networkController, bluetoothNotifier, batteryController, locationController);
         }
     }
 
