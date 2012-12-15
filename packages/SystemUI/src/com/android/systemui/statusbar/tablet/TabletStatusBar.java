@@ -960,6 +960,10 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     @Override
     protected void tick(IBinder key, StatusBarNotification n, boolean firstTime) {
+        // Don't show the ticker if the notification is not for current user.
+        if (!notificationIsForCurrentUser(n)) {
+            return;
+        }
         // Don't show the ticker when the windowshade is open.
         if (mNotificationPanel.isShowing()) {
             return;
@@ -1405,10 +1409,10 @@ public class TabletStatusBar extends BaseStatusBar implements
         for (int i=0; toShow.size()< maxNotificationIconsCount; i++) {
             if (i >= N) break;
             Entry ent = mNotificationData.get(N-i-1);
-            if ((provisioned && ent.notification.score >= HIDE_ICONS_BELOW_SCORE)
-                    || showNotificationEvenIfUnprovisioned(ent.notification)) {
-                toShow.add(ent.icon);
-            }
+            if (!((provisioned && ent.notification.score >= HIDE_ICONS_BELOW_SCORE)
+                    || showNotificationEvenIfUnprovisioned(ent.notification))) continue;
+            if (!notificationIsForCurrentUser(ent.notification)) continue;
+            toShow.add(ent.icon);
         }
 
         ArrayList<View> toRemove = new ArrayList<View>();
@@ -1441,9 +1445,9 @@ public class TabletStatusBar extends BaseStatusBar implements
         // If the device hasn't been through Setup, we only show system notifications
         for (int i=0; i<N; i++) {
             Entry ent = mNotificationData.get(N-i-1);
-            if (provisioned || showNotificationEvenIfUnprovisioned(ent.notification)) {
-                toShow.add(ent.row);
-            }
+            if (!(provisioned || showNotificationEvenIfUnprovisioned(ent.notification))) continue;
+            if (!notificationIsForCurrentUser(ent.notification)) continue;
+            toShow.add(ent.row);
         }
 
         ArrayList<View> toRemove = new ArrayList<View>();
@@ -1534,6 +1538,12 @@ public class TabletStatusBar extends BaseStatusBar implements
     protected boolean shouldDisableNavbarGestures() {
         return mNotificationPanel.getVisibility() == View.VISIBLE
                 || (mDisabled & StatusBarManager.DISABLE_HOME) != 0;
+    }
+
+    @Override
+    public void userSwitched(int newUserId) {
+        animateCollapsePanels();
+        updateNotificationIcons();
     }
 }
 
