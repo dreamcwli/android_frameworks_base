@@ -23,6 +23,24 @@
         android:orientation="vertical"
         >
 
+    <!-- Brightness -->
+    <LinearLayout style="@style/SystemBarPanelSettingsRow" >
+        <ImageView
+                android:id="@+id/brightness_icon"
+                style="@style/SystemBarPanelSettingsIcon"
+                android:src="@drawable/ic_sysbar_brightness"
+                />
+        <com.android.systemui.statusbar.policy.ToggleSlider
+                android:id="@+id/brightness"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="2dp"
+                systemui:text="@string/status_bar_settings_auto_brightness_label"
+                />
+    </LinearLayout>
+    <View style="@style/SystemBarPanelSettingsPanelSeparator" />
+
     <!-- Airplane mode -->
     <LinearLayout
             android:id="@+id/airplane"
@@ -48,23 +66,84 @@
     </LinearLayout>
     <View style="@style/SystemBarPanelSettingsPanelSeparator" />
 
-    <!-- Network -->
+    <!-- Wi-Fi -->
     <LinearLayout
-            android:id="@+id/network"
+            android:id="@+id/wifi"
             style="@style/SystemBarPanelSettingsRow"
             >
         <ImageView
-                android:id="@+id/network_icon"
+                android:id="@+id/wifi_icon"
                 style="@style/SystemBarPanelSettingsIcon"
                 android:src="@drawable/ic_sysbar_wifi_on"
                 />
         <TextView
-                android:id="@+id/network_label"
+                android:id="@+id/wifi_label"
                 style="@style/SystemBarPanelSettingsContents"
                 android:text="@string/status_bar_settings_wifi_button"
                 />
+        <Switch
+                android:id="@+id/wifi_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                />
     </LinearLayout>
     <View style="@style/SystemBarPanelSettingsPanelSeparator" />
+
+    <!-- Bluetooth -->
+    <LinearLayout
+            android:id="@+id/bluetooth"
+            style="@style/SystemBarPanelSettingsRow"
+            >
+        <ImageView
+                android:id="@+id/bluetooth_icon"
+                style="@style/SystemBarPanelSettingsIcon"
+                android:src="@drawable/ic_sysbar_bluetooth"
+                />
+        <TextView
+                android:id="@+id/bluetooth_label"
+                style="@style/SystemBarPanelSettingsContents"
+                android:text="@string/status_bar_settings_bluetooth"
+                />
+        <Switch
+                android:id="@+id/bluetooth_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                />
+    </LinearLayout>
+    <View
+            android:id="@+id/bluetooth_separator"
+            style="@style/SystemBarPanelSettingsPanelSeparator" />
+
+    <!-- GPS -->
+    <LinearLayout
+            android:id="@+id/gps"
+            style="@style/SystemBarPanelSettingsRow"
+            >
+        <ImageView
+                android:id="@+id/gps_icon"
+                style="@style/SystemBarPanelSettingsIcon"
+                android:src="@drawable/ic_sysbar_gps"
+                />
+        <TextView
+                android:id="@+id/gps_label"
+                style="@style/SystemBarPanelSettingsContents"
+                android:text="@string/status_bar_settings_gps"
+                />
+        <Switch
+                android:id="@+id/gps_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                />
+    </LinearLayout>
+    <View
+            android:id="@+id/gps_separator"
+            style="@style/SystemBarPanelSettingsPanelSeparator" />
 
     <!-- Rotation lock -->
     <LinearLayout
@@ -92,24 +171,6 @@
     <View
             android:id="@+id/rotate_separator"
             style="@style/SystemBarPanelSettingsPanelSeparator" />
-
-    <!-- Brightness -->
-    <LinearLayout style="@style/SystemBarPanelSettingsRow" >
-        <ImageView
-                android:id="@+id/brightness_icon"
-                style="@style/SystemBarPanelSettingsIcon"
-                android:src="@drawable/ic_sysbar_brightness"
-                />
-        <com.android.systemui.statusbar.policy.ToggleSlider
-                android:id="@+id/brightness"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_marginRight="2dp"
-                systemui:text="@string/status_bar_settings_auto_brightness_label"
-                />
-    </LinearLayout>
-    <View style="@style/SystemBarPanelSettingsPanelSeparator" />
 
     <!-- Notifications / Do not disturb -->
     <LinearLayout
