@@ -123,7 +123,7 @@ public class BluetoothNotifier extends BroadcastReceiver {
         final boolean connected = (connectionState == BluetoothAdapter.STATE_CONNECTED);
         final boolean sysbar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
         if (connected) {
-            mIconId = sysbar ? R.drawable.ic_sysbar_data_bluetooth
+            mIconId = sysbar ? R.drawable.ic_sysbar_data_bluetooth_connected
                              : R.drawable.stat_sys_data_bluetooth_connected;
             mContentDescriptionId = R.string.accessibility_bluetooth_connected;
         } else {
