@@ -23,6 +23,7 @@ import android.os.IPowerManager;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.Slog;
@@ -144,7 +145,7 @@ public class BrightnessController implements ToggleSlider.Listener {
     }
 
     private void updateIcon(boolean automatic) {
-        if (mIcon != null) {
+        if (mIcon != null && !SystemProperties.getBoolean("persist.sys.ui.sysbar", false)) {
             mIcon.setImageResource(automatic ?
                     com.android.systemui.R.drawable.ic_qs_brightness_auto_on :
                     com.android.systemui.R.drawable.ic_qs_brightness_auto_off);
