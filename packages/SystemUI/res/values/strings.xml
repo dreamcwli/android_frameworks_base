@@ -522,4 +522,9 @@
 
     <!-- Name of the button that links to the location settings screen. [CHAR LIMIT=NONE] -->
     <string name="status_bar_settings_gps">GPS</string>
+
+    <!-- QuickSettings: GPS [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_gps_label">GPS</string>
+    <!-- QuickSettings: GPS (Off) [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_gps_off_label">GPS Off</string>
 </resources>

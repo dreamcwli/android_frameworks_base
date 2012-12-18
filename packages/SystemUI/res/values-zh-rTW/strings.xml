@@ -207,4 +207,6 @@
     <string name="status_bar_help_text" msgid="7874607155052076323">"向下滑動即可隨時存取通知。"\n"再次向下滑動即可使用系統控制項。"</string>
     <string name="status_bar_settings_bluetooth">"藍牙"</string>
     <string name="status_bar_settings_gps">"GPS"</string>
+    <string name="quick_settings_gps_label">"GPS"</string>
+    <string name="quick_settings_gps_off_label">"關閉 GPS"</string>
 </resources>

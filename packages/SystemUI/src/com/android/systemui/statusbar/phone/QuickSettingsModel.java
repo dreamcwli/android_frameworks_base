@@ -29,6 +29,8 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.WifiDisplayStatus;
+import android.location.LocationManager;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -107,6 +109,24 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         }
     };
 
+    /** ContentObserver to watch GPS **/
+    private class GpsObserver extends ContentObserver {
+        public GpsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override public void onChange(boolean selfChange) {
+            onLocationStateChanged();
+        }
+
+        public void startObserving() {
+            final ContentResolver cr = mContext.getContentResolver();
+            cr.registerContentObserver(
+                    Settings.Secure.getUriFor(Settings.Secure.LOCATION_PROVIDERS_ALLOWED), false,
+                    this);
+        }
+    }
+
     /** ContentObserver to determine the next alarm */
     private class NextAlarmObserver extends ContentObserver {
         public NextAlarmObserver(Handler handler) {
@@ -165,8 +185,12 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     }
 
     private final Context mContext;
+    private final ContentResolver mResolver;
     private final Handler mHandler;
     private final CurrentUserTracker mUserTracker;
+    private final WifiManager mWifiManager;
+    private final BluetoothAdapter mBluetoothAdapter;
+    private final GpsObserver mGpsObserver;
     private final NextAlarmObserver mNextAlarmObserver;
     private final BugreportObserver mBugreportObserver;
     private final BrightnessObserver mBrightnessObserver;
@@ -233,6 +257,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     public QuickSettingsModel(Context context) {
         mContext = context;
+        mResolver = context.getContentResolver();
         mHandler = new Handler();
         mUserTracker = new CurrentUserTracker(mContext) {
             @Override
@@ -241,7 +266,11 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
                 onUserSwitched();
             }
         };
+        mWifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+        mGpsObserver = new GpsObserver(mHandler);
+        mGpsObserver.startObserving();
         mNextAlarmObserver = new NextAlarmObserver(mHandler);
         mNextAlarmObserver.startObserving();
         mBugreportObserver = new BugreportObserver(mHandler);
@@ -355,6 +384,12 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     // Wifi
     void addWifiTile(QuickSettingsTileView view, RefreshCallback cb) {
         mWifiTile = view;
+        mWifiTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWifiManager.setWifiEnabled(!mWifiManager.isWifiEnabled());
+            }
+        });
         mWifiCallback = cb;
         mWifiCallback.refreshView(mWifiTile, mWifiState);
     }
@@ -443,12 +478,21 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     // Bluetooth
     void addBluetoothTile(QuickSettingsTileView view, RefreshCallback cb) {
         mBluetoothTile = view;
+        mBluetoothTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBluetoothAdapter.isEnabled()) {
+                    mBluetoothAdapter.disable();
+                } else {
+                    mBluetoothAdapter.enable();
+                }
+            }
+        });
         mBluetoothCallback = cb;
 
-        final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-        mBluetoothState.enabled = adapter.isEnabled();
+        mBluetoothState.enabled = mBluetoothAdapter.isEnabled();
         mBluetoothState.connected =
-                (adapter.getConnectionState() == BluetoothAdapter.STATE_CONNECTED);
+                (mBluetoothAdapter.getConnectionState() == BluetoothAdapter.STATE_CONNECTED);
         onBluetoothStateChange(mBluetoothState);
     }
     boolean deviceSupportsBluetooth() {
@@ -507,14 +551,36 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     // Location
     void addLocationTile(QuickSettingsTileView view, RefreshCallback cb) {
         mLocationTile = view;
+        mLocationTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Settings.Secure.setLocationProviderEnabled(mResolver, LocationManager.GPS_PROVIDER,
+                        !Settings.Secure.isLocationProviderEnabled(
+                                mResolver, LocationManager.GPS_PROVIDER));
+            }
+        });
         mLocationCallback = cb;
-        mLocationCallback.refreshView(mLocationTile, mLocationState);
+        onLocationStateChanged();
     }
     // LocationController callback
     @Override
     public void onLocationGpsStateChanged(boolean inUse, String description) {
-        mLocationState.enabled = inUse;
-        mLocationState.label = description;
+        onLocationStateChanged(description);
+    }
+    public void onLocationStateChanged() {
+        onLocationStateChanged(null);
+    }
+    public void onLocationStateChanged(String description) {
+        mLocationState.enabled =
+                Settings.Secure.isLocationProviderEnabled(mResolver, LocationManager.GPS_PROVIDER);
+        mLocationState.iconId = mLocationState.enabled
+            ? R.drawable.ic_qs_location
+            : R.drawable.ic_qs_location_off;
+        mLocationState.label = TextUtils.isEmpty(description)
+                ? (mLocationState.enabled
+                        ? mContext.getString(R.string.quick_settings_gps_label)
+                        : mContext.getString(R.string.quick_settings_gps_off_label))
+                : description;
         mLocationCallback.refreshView(mLocationTile, mLocationState);
     }
 
