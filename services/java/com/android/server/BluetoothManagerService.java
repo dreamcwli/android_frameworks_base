@@ -297,7 +297,7 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
     }
 
     public boolean isEnabled() {
-        if (!checkIfCallerIsForegroundUser()) {
+        if (!(checkIfCallerIsForegroundUser() || checkIfCallerIsOwner())) {
             Log.w(TAG,"isEnabled(): not allowed for non-active user");
             return false;
         }
@@ -325,7 +325,7 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
         mContext.enforceCallingOrSelfPermission(BLUETOOTH_ADMIN_PERM,
                                                 "Need BLUETOOTH ADMIN permission");
 
-        if (!checkIfCallerIsForegroundUser()) {
+        if (!(checkIfCallerIsForegroundUser() || checkIfCallerIsOwner())) {
             Log.w(TAG,"enableNoAutoConnect(): not allowed for non-active user");
             return false;
         }
@@ -345,7 +345,7 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
 
     }
     public boolean enable() {
-        if (!checkIfCallerIsForegroundUser()) {
+        if (!(checkIfCallerIsForegroundUser() || checkIfCallerIsOwner())) {
             Log.w(TAG,"enable(): not allowed for non-active user");
             return false;
         }
@@ -357,7 +357,7 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
         mContext.enforceCallingOrSelfPermission(BLUETOOTH_ADMIN_PERM,
                                                 "Need BLUETOOTH ADMIN permissicacheNameAndAddresson");
 
-        if (!checkIfCallerIsForegroundUser()) {
+        if (!(checkIfCallerIsForegroundUser() || checkIfCallerIsOwner())) {
             Log.w(TAG,"disable(): not allowed for non-active user");
             return false;
         }
@@ -456,7 +456,7 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
         mContext.enforceCallingOrSelfPermission(BLUETOOTH_ADMIN_PERM,
                                                 "Need BLUETOOTH ADMIN permission");
 
-        if (!checkIfCallerIsForegroundUser()) {
+        if (!(checkIfCallerIsForegroundUser() || checkIfCallerIsOwner())) {
             Log.w(TAG,"getAddress(): not allowed for non-active user");
             return mAddress;
         }
@@ -480,7 +480,7 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
         mContext.enforceCallingOrSelfPermission(BLUETOOTH_ADMIN_PERM,
                                                 "Need BLUETOOTH ADMIN permission");
 
-        if (!checkIfCallerIsForegroundUser()) {
+        if (!(checkIfCallerIsForegroundUser() || checkIfCallerIsOwner())) {
             Log.w(TAG,"getName(): not allowed for non-active user");
             return mName;
         }
@@ -957,6 +957,10 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
             Binder.restoreCallingIdentity(callingIdentity);
         }
         return valid;
+    }
+
+    private boolean checkIfCallerIsOwner() {
+        return (UserHandle.getCallingUserId() == UserHandle.USER_OWNER);
     }
 
     private boolean enableHelper() {
