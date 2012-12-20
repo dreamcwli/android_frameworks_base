@@ -91,6 +91,9 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         boolean connected = false;
         String stateContentDescription;
     }
+    static class LocationState extends State {
+        boolean idle = true;
+    }
 
     /** The callback to update a given tile. */
     interface RefreshCallback {
@@ -186,7 +189,6 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     }
 
     private final Context mContext;
-    private final ContentResolver mResolver;
     private final Handler mHandler;
     private final CurrentUserTracker mUserTracker;
     private final WifiManager mWifiManager;
@@ -234,7 +236,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     private QuickSettingsTileView mLocationTile;
     private RefreshCallback mLocationCallback;
-    private State mLocationState = new State();
+    private LocationState mLocationState = new LocationState();
 
     private QuickSettingsTileView mImeTile;
     private RefreshCallback mImeCallback = null;
@@ -258,7 +260,6 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     public QuickSettingsModel(Context context) {
         mContext = context;
-        mResolver = context.getContentResolver();
         mHandler = new Handler();
         mUserTracker = new CurrentUserTracker(mContext) {
             @Override
@@ -555,9 +556,12 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mLocationTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Settings.Secure.setLocationProviderEnabled(mResolver, LocationManager.GPS_PROVIDER,
-                        !Settings.Secure.isLocationProviderEnabled(
-                                mResolver, LocationManager.GPS_PROVIDER));
+                final ContentResolver cr = mContext.getContentResolver();
+                Settings.Secure.setLocationProviderEnabledForUser(
+                        cr, LocationManager.GPS_PROVIDER,
+                        !Settings.Secure.isLocationProviderEnabledForUser(
+                                cr, LocationManager.GPS_PROVIDER, mUserTracker.getCurrentUserId()),
+                        mUserTracker.getCurrentUserId());
             }
         });
         mLocationCallback = cb;
@@ -566,22 +570,26 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     // LocationController callback
     @Override
     public void onLocationGpsStateChanged(boolean inUse, String description) {
-        onLocationStateChanged(description);
+        mLocationState.label = description;
+        mLocationState.idle = !inUse;
+        onLocationStateChanged();
     }
     public void onLocationStateChanged() {
-        onLocationStateChanged(null);
-    }
-    public void onLocationStateChanged(String description) {
-        mLocationState.enabled = Settings.Secure.isLocationProviderEnabledForUser(mResolver,
-                LocationManager.GPS_PROVIDER, mUserTracker.getCurrentUserId());
-        mLocationState.iconId = mLocationState.enabled
-            ? R.drawable.ic_qs_location
-            : R.drawable.ic_qs_location_off;
-        mLocationState.label = TextUtils.isEmpty(description)
-                ? (mLocationState.enabled
-                        ? mContext.getString(R.string.quick_settings_gps_label)
-                        : mContext.getString(R.string.quick_settings_gps_off_label))
-                : description;
+        Resources r = mContext.getResources();
+        mLocationState.enabled = Settings.Secure.isLocationProviderEnabledForUser(
+                mContext.getContentResolver(), LocationManager.GPS_PROVIDER,
+                mUserTracker.getCurrentUserId());
+        if (mLocationState.idle) {
+            if (mLocationState.enabled) {
+                mLocationState.iconId = R.drawable.ic_qs_location_idle;
+                mLocationState.label = r.getString(R.string.quick_settings_gps_label);
+            } else {
+                mLocationState.iconId = R.drawable.ic_qs_location_off;
+                mLocationState.label = r.getString(R.string.quick_settings_gps_off_label);
+            }
+        } else {
+            mLocationState.iconId = R.drawable.ic_qs_location;
+        }
         mLocationCallback.refreshView(mLocationTile, mLocationState);
     }
 
