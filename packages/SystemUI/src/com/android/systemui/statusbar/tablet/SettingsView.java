@@ -188,24 +188,27 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
     // Wi-Fi
     // ----------------------------
     private void onClickWifi() {
-        getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        getContext().startActivityAsUser(new Intent(Settings.ACTION_WIFI_SETTINGS)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                new UserHandle(UserHandle.USER_CURRENT));
         getStatusBarManager().collapsePanels();
     }
 
     // Bluetooth
     // ----------------------------
     private void onClickBluetooth() {
-        getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        getContext().startActivityAsUser(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                new UserHandle(UserHandle.USER_CURRENT));
         getStatusBarManager().collapsePanels();
     }
 
     // GPS
     // ----------------------------
     private void onClickGps() {
-        getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        getContext().startActivityAsUser(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                new UserHandle(UserHandle.USER_CURRENT));
         getStatusBarManager().collapsePanels();
     }
 
