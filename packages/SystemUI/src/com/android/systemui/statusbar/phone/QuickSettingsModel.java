@@ -121,9 +121,10 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
         public void startObserving() {
             final ContentResolver cr = mContext.getContentResolver();
+            cr.unregisterContentObserver(this);
             cr.registerContentObserver(
-                    Settings.Secure.getUriFor(Settings.Secure.LOCATION_PROVIDERS_ALLOWED), false,
-                    this);
+                    Settings.Secure.getUriFor(Settings.Secure.LOCATION_PROVIDERS_ALLOWED),
+                    false, this, mUserTracker.getCurrentUserId());
         }
     }
 
@@ -571,8 +572,8 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         onLocationStateChanged(null);
     }
     public void onLocationStateChanged(String description) {
-        mLocationState.enabled =
-                Settings.Secure.isLocationProviderEnabled(mResolver, LocationManager.GPS_PROVIDER);
+        mLocationState.enabled = Settings.Secure.isLocationProviderEnabledForUser(mResolver,
+                LocationManager.GPS_PROVIDER, mUserTracker.getCurrentUserId());
         mLocationState.iconId = mLocationState.enabled
             ? R.drawable.ic_qs_location
             : R.drawable.ic_qs_location_off;
@@ -759,7 +760,9 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     // User switch: need to update visuals of all tiles known to have per-user state
     void onUserSwitched() {
+        mGpsObserver.startObserving();
         mBrightnessObserver.startObserving();
+        onLocationStateChanged();
         onRotationLockChanged();
         onBrightnessLevelChanged();
         onNextAlarmChanged();
