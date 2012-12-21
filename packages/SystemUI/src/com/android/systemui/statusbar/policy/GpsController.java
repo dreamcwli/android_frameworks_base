@@ -1,47 +1,60 @@
 package com.android.systemui.statusbar.policy;
 
-import android.content.ContentQueryMap;
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
+import android.database.ContentObserver;
 import android.location.LocationManager;
-import android.net.Uri;
+import android.os.Handler;
 import android.provider.Settings;
 import android.widget.CompoundButton;
 
-import java.util.Observable;
-import java.util.Observer;
-
 public class GpsController implements CompoundButton.OnCheckedChangeListener {
-    private static final Uri LOCATION_PROVIDERS_URI =
-            Settings.Secure.getUriFor(Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-    private Context mContext;
-    private CompoundButton mButton;
+    private class GpsObserver extends ContentObserver {
+        public GpsObserver(Handler handler) {
+            super(handler);
+        }
 
-    private ContentResolver mResolver;
-    private ContentQueryMap mMap;
-    private Observer mObserver = new Observer() {
-        public void update(Observable observable, Object data) {
+        @Override public void onChange(boolean selfChange) {
             updateButton();
         }
-    };
+
+        public void startObserving() {
+            final ContentResolver cr = mContext.getContentResolver();
+            cr.registerContentObserver(
+                    Settings.Secure.getUriFor(Settings.Secure.LOCATION_PROVIDERS_ALLOWED),
+                    false, this, mUser);
+        }
+
+        public void stopObserving() {
+            final ContentResolver cr = mContext.getContentResolver();
+            cr.unregisterContentObserver(this);
+        }
+    }
+
+    private Context mContext;
+    private CompoundButton mButton;
+    private int mUser;
+
+    private Handler mHandler;
+    private GpsObserver mObserver;
+
     private boolean mUpdating = false;
 
     public GpsController(Context context, CompoundButton button) {
         mContext = context;
         mButton = button;
-        button.setOnCheckedChangeListener(this);
+        mUser = ActivityManager.getCurrentUser();
         updateButton();
-        mResolver = context.getContentResolver();
-        Cursor cursor = mResolver.query(Settings.Secure.CONTENT_URI, null,
-                "(" + Settings.System.NAME + "=?)",
-                new String[]{Settings.Secure.LOCATION_PROVIDERS_ALLOWED}, null);
-        mMap = new ContentQueryMap(cursor, Settings.System.NAME, true, null);
-        mMap.addObserver(mObserver);
+        button.setOnCheckedChangeListener(this);
+
+        mHandler = new Handler();
+        mObserver = new GpsObserver(mHandler);
+        mObserver.startObserving();
     }
 
     public void release() {
-        mMap.deleteObserver(mObserver);
+        mObserver.stopObserving();
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -49,14 +62,14 @@ public class GpsController implements CompoundButton.OnCheckedChangeListener {
             return;
         }
 
-        Settings.Secure.setLocationProviderEnabled(
-                mResolver, LocationManager.GPS_PROVIDER, isChecked);
+        Settings.Secure.setLocationProviderEnabledForUser(mContext.getContentResolver(),
+                LocationManager.GPS_PROVIDER, isChecked, mUser);
     }
 
     private void updateButton() {
         mUpdating = true;
-        mButton.setChecked(Settings.Secure.isLocationProviderEnabled(
-                    mResolver, LocationManager.GPS_PROVIDER));
+        mButton.setChecked(Settings.Secure.isLocationProviderEnabledForUser(
+                    mContext.getContentResolver(), LocationManager.GPS_PROVIDER, mUser));
         mUpdating = false;
     }
 }
