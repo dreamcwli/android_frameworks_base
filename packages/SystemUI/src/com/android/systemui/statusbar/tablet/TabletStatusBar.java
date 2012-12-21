@@ -1154,8 +1154,7 @@ public class TabletStatusBar extends BaseStatusBar implements
     }
 
     public void setImeWindowStatus(IBinder token, int vis, int backDisposition) {
-        mInputMethodSwitchButton.setImeWindowStatus(token,
-                (vis & InputMethodService.IME_ACTIVE) != 0);
+        mInputMethodSwitchButton.setImeWindowStatus(token, false);
         updateNotificationIcons();
         mInputMethodsPanel.setImeToken(token);
 
