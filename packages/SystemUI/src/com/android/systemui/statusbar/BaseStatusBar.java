@@ -265,6 +265,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_USER_SWITCHED);
+        filter.addAction("com.android.settings.SYSBAR_SETTING_CHANGED");
         mContext.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -273,6 +274,8 @@ public abstract class BaseStatusBar extends SystemUI implements
                     mCurrentUserId = intent.getIntExtra(Intent.EXTRA_USER_HANDLE, -1);
                     if (true) Slog.v(TAG, "userId " + mCurrentUserId + " is in the house");
                     userSwitched(mCurrentUserId);
+                } else if ("com.android.settings.SYSBAR_SETTING_CHANGED".equals(action)) {
+                    System.exit(0);
                 }
             }}, filter);
     }

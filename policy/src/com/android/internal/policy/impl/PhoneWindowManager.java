@@ -923,6 +923,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         filter = new IntentFilter(Intent.ACTION_USER_SWITCHED);
         context.registerReceiver(mMultiuserReceiver, filter);
 
+        filter = new IntentFilter("com.android.settings.SYSBAR_SETTING_CHANGED");
+        context.registerReceiver(mSystemBarReceiver, filter);
+
         mVibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         mLongPressVibePattern = getLongIntArray(mContext.getResources(),
                 com.android.internal.R.array.config_longPressVibePattern);
@@ -3776,6 +3779,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mLastSystemUiFlags = 0;
                     updateSystemUiVisibilityLw();
                 }
+            }
+        }
+    };
+
+    BroadcastReceiver mSystemBarReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context text, Intent intent) {
+            if ("com.android.settings.SYSBAR_SETTING_CHANGED".equals(intent.getAction())) {
+                mHasSystemNavBar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
+                mHasNavigationBar = !mHasSystemNavBar;
             }
         }
     };
