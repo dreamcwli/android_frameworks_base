@@ -1021,4 +1021,9 @@
         <item>250</item>
         <item>250</item>
     </integer-array>
+
+    <bool name="config_chargingLightSupported">false</bool>
+    <string name="config_chargingLightFilename"></string>
+    <string name="config_chargingLightEnabledValue"></string>
+    <string name="config_chargingLightDisabledValue"></string>
 </resources>
