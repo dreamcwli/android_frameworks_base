@@ -1024,4 +1024,10 @@
 
     <!-- Flag indicating if the speed up audio on mt call code should be executed -->
     <bool name="config_speed_up_audio_on_mt_calls">false</bool>
+
+    <!-- Whether charging light is supported by this device -->
+    <bool name="config_chargingLightSupported">false</bool>
+    <string name="config_chargingLightPath"></string>
+    <string name="config_chargingLightEnabledValue"></string>
+    <string name="config_chargingLightDisabledValue"></string>
 </resources>

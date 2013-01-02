@@ -1761,6 +1761,7 @@
   <!-- From Settings -->
   <java-symbol type="array" name="config_mobile_hotspot_provision_app" />
   <java-symbol type="bool" name="config_intrusiveNotificationLed" />
+  <java-symbol type="bool" name="config_chargingLightSupported" />
   <java-symbol type="dimen" name="preference_fragment_padding_bottom" />
   <java-symbol type="dimen" name="preference_fragment_padding_side" />
   <java-symbol type="drawable" name="expander_ic_maximized" />
@@ -1772,6 +1773,9 @@
   <java-symbol type="id" name="body" />
   <java-symbol type="string" name="fast_scroll_alphabet" />
   <java-symbol type="string" name="ssl_certificate" />
+  <java-symbol type="string" name="config_chargingLightPath" />
+  <java-symbol type="string" name="config_chargingLightEnabledValue" />
+  <java-symbol type="string" name="config_chargingLightDisabledValue" />
 
   <!-- From Phone -->
   <java-symbol type="bool" name="config_built_in_sip_phone" />
