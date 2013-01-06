@@ -55,6 +55,16 @@ class TelephonyIcons {
           R.drawable.ic_qs_signal_full_1,
           R.drawable.ic_qs_signal_full_2,
           R.drawable.ic_qs_signal_full_3,
+          R.drawable.ic_qs_signal_full_4 },
+        { R.drawable.ic_qs_signal_0,
+          R.drawable.ic_qs_signal_1,
+          R.drawable.ic_qs_signal_2,
+          R.drawable.ic_qs_signal_3,
+          R.drawable.ic_qs_signal_4 },
+        { R.drawable.ic_qs_signal_full_0,
+          R.drawable.ic_qs_signal_full_1,
+          R.drawable.ic_qs_signal_full_2,
+          R.drawable.ic_qs_signal_full_3,
           R.drawable.ic_qs_signal_full_4 }
     };
 
