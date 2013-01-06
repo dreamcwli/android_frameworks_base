@@ -48,11 +48,13 @@ public class BluetoothNotifier extends BroadcastReceiver {
     private ArrayList<BluetoothStateChangeCallback> mChangeCallbacks =
             new ArrayList<BluetoothStateChangeCallback>();
 
+    private boolean mUseSystemBar;
+
     public BluetoothNotifier(Context context) {
         mContext = context;
-        mIconId = SystemProperties.getBoolean("persist.sys.ui.sysbar", false)
-                ? R.drawable.ic_sysbar_data_bluetooth
-                : R.drawable.stat_sys_data_bluetooth;
+        mUseSystemBar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
+        mIconId = mUseSystemBar
+                ? R.drawable.ic_sysbar_data_bluetooth : R.drawable.stat_sys_data_bluetooth;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -121,14 +123,15 @@ public class BluetoothNotifier extends BroadcastReceiver {
 
     public void handleConnectionStateChange(int connectionState) {
         final boolean connected = (connectionState == BluetoothAdapter.STATE_CONNECTED);
-        final boolean sysbar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
         if (connected) {
-            mIconId = sysbar ? R.drawable.ic_sysbar_data_bluetooth_connected
-                             : R.drawable.stat_sys_data_bluetooth_connected;
+            mIconId = mUseSystemBar
+                    ? R.drawable.ic_sysbar_data_bluetooth_connected
+                    : R.drawable.stat_sys_data_bluetooth_connected;
             mContentDescriptionId = R.string.accessibility_bluetooth_connected;
         } else {
-            mIconId = sysbar ? R.drawable.ic_sysbar_data_bluetooth
-                             : R.drawable.stat_sys_data_bluetooth;
+            mIconId = mUseSystemBar
+                    ? R.drawable.ic_sysbar_data_bluetooth
+                    : R.drawable.stat_sys_data_bluetooth;
             mContentDescriptionId = R.string.accessibility_bluetooth_disconnected;
         }
     }
