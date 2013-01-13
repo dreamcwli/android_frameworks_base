@@ -959,6 +959,10 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     @Override
     protected void tick(IBinder key, StatusBarNotification n, boolean firstTime) {
+        // Don't show the ticker if the notification is not for current user.
+        if (!notificationIsForCurrentUser(n)) {
+            return;
+        }
         // Don't show the ticker when the windowshade is open.
         if (mNotificationPanel.isShowing()) {
             return;
