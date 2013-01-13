@@ -275,13 +275,9 @@ public abstract class BaseStatusBar extends SystemUI implements
                     if (true) Slog.v(TAG, "userId " + mCurrentUserId + " is in the house");
                     userSwitched(mCurrentUserId);
                 } else if ("com.android.settings.SYSBAR_SETTING_CHANGED".equals(action)) {
-                    mContext.sendBroadcast(
-                            new Intent().setAction("com.android.systemui.SYSTEMUI_STOPPED"));
                     System.exit(0);
                 }
             }}, filter);
-
-        mContext.sendBroadcast(new Intent().setAction("com.android.systemui.SYSTEMUI_STARTED"));
     }
 
     public void userSwitched(int newUserId) {
