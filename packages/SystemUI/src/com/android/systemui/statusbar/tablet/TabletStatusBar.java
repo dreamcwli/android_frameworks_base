@@ -399,8 +399,9 @@ public class TabletStatusBar extends BaseStatusBar implements
             com.android.internal.R.dimen.system_bar_icon_size);
         int newIconHPadding = res.getDimensionPixelSize(
             R.dimen.status_bar_icon_padding);
-        int newNavIconWidth = res.getDimensionPixelSize(R.dimen.navigation_key_width);
-        int newMenuNavIconWidth = res.getDimensionPixelSize(R.dimen.navigation_menu_key_width);
+        int newNavIconWidth = res.getDimensionPixelSize(R.dimen.system_bar_navigation_key_width);
+        int newMenuNavIconWidth =
+                res.getDimensionPixelSize(R.dimen.system_bar_navigation_menu_key_width);
 
         if (mNavigationArea != null && newNavIconWidth != mNavIconWidth) {
             mNavIconWidth = newNavIconWidth;
