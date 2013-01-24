@@ -926,6 +926,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         filter = new IntentFilter("com.android.settings.SYSBAR_SETTING_CHANGED");
         context.registerReceiver(mSystemBarReceiver, filter);
 
+        filter = new IntentFilter("com.android.settings.NAVBAR_SETTINGS_CHANGED");
+        context.registerReceiver(mNavigationBarReceiver, filter);
+
         mVibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         mLongPressVibePattern = getLongIntArray(mContext.getResources(),
                 com.android.internal.R.array.config_longPressVibePattern);
@@ -1008,10 +1011,15 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // SystemUI (status bar) layout policy
         int shortSizeDp = shortSize * DisplayMetrics.DENSITY_DEFAULT / density;
 
-        if (shortSizeDp < 720) {
-            // 0-719dp: "phone" UI with a separate status & navigation bar
+        if (shortSizeDp < 600) {
+            // 0-599dp: "phone" UI with a separate status & navigation bar
             mHasSystemNavBar = false;
             mNavigationBarCanMove = true;
+        } else if (shortSizeDp < 720) {
+            // 0-719dp: "phone" UI with a separate status & navigation bar
+            mHasSystemNavBar = false;
+            mNavigationBarCanMove =
+                    SystemProperties.getBoolean("persist.sys.ui.navbar.move", false);
         } else {
             // 720+dp: "phone" UI with modifications for larger screens or
             //         "tablet" UI with a single combined status & navigation bar
@@ -3789,6 +3797,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             if ("com.android.settings.SYSBAR_SETTING_CHANGED".equals(intent.getAction())) {
                 mHasSystemNavBar = SystemProperties.getBoolean("persist.sys.ui.sysbar", false);
                 mHasNavigationBar = !mHasSystemNavBar;
+            }
+        }
+    };
+
+    BroadcastReceiver mNavigationBarReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context text, Intent intent) {
+            if ("com.android.settings.NAVBAR_SETTINGS_CHANGED".equals(intent.getAction())) {
+                mNavigationBarCanMove =
+                        SystemProperties.getBoolean("persist.sys.ui.navbar.move", false);
             }
         }
     };

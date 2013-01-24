@@ -27,17 +27,20 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Slog;
+import android.view.Display;
 import android.view.IWindowManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.android.internal.widget.multiwaveview.GlowPadView;
@@ -66,6 +69,8 @@ public class SearchPanelView extends FrameLayout implements
     private GlowPadView mGlowPadView;
     private IWindowManager mWm;
 
+    private final Display mDisplay;
+
     public SearchPanelView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -74,6 +79,8 @@ public class SearchPanelView extends FrameLayout implements
         super(context, attrs, defStyle);
         mContext = context;
         mWm = IWindowManager.Stub.asInterface(ServiceManager.getService("window"));
+        mDisplay = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
     }
 
     private void startAssistActivity() {
@@ -170,7 +177,12 @@ public class SearchPanelView extends FrameLayout implements
         mSearchTargetsContainer = findViewById(R.id.search_panel_container);
         mStatusBarTouchProxy = (StatusBarTouchProxy) findViewById(R.id.status_bar_touch_proxy);
         // TODO: fetch views
-        mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
+        if (SystemProperties.getBoolean("persist.sys.ui.navbar.move", false)
+                && (mDisplay.getRotation() & 1) == 1) {
+            mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view_alt);
+        } else {
+            mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
+        }
         mGlowPadView.setOnTriggerListener(mGlowPadViewListener);
     }
 
