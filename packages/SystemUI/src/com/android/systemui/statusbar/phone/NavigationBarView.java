@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
 import android.util.Slog;
 import android.view.animation.AccelerateInterpolator;
@@ -356,10 +357,11 @@ public class NavigationBarView extends LinearLayout {
         mRotatedViews[Surface.ROTATION_0] = 
         mRotatedViews[Surface.ROTATION_180] = findViewById(R.id.rot0);
 
-        mRotatedViews[Surface.ROTATION_90] = findViewById(R.id.rot90);
-        
+        mRotatedViews[Surface.ROTATION_90] = findViewById(
+                SystemProperties.getBoolean("persist.sys.ui.navbar.move", false)
+                        ? R.id.rot90_alt : R.id.rot90);
         mRotatedViews[Surface.ROTATION_270] = NAVBAR_ALWAYS_AT_RIGHT
-                                                ? findViewById(R.id.rot90)
+                                                ? mRotatedViews[Surface.ROTATION_90]
                                                 : findViewById(R.id.rot270);
 
         mCurrentView = mRotatedViews[Surface.ROTATION_0];

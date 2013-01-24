@@ -45,4 +45,24 @@
         prvandroid:glowRadius="@*android:dimen/glowpadview_glow_radius"
         prvandroid:pointDrawable="@*android:drawable/ic_lockscreen_glowdot"/>
 
+    <com.android.internal.widget.multiwaveview.GlowPadView
+        android:id="@+id/glow_pad_view_alt"
+        android:layout_width="@dimen/navbar_search_panel_height"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right"
+        android:gravity="center_vertical|left"
+
+        prvandroid:targetDrawables="@array/navbar_search_targets_alt"
+        prvandroid:targetDescriptions="@array/navbar_search_target_descriptions_alt"
+        prvandroid:directionDescriptions="@array/navbar_search_direction_descriptions_alt"
+        prvandroid:outerRingDrawable="@drawable/navbar_search_outerring"
+        prvandroid:outerRadius="@dimen/navbar_search_outerring_radius"
+        prvandroid:innerRadius="@*android:dimen/glowpadview_inner_radius"
+        prvandroid:snapMargin="@dimen/navbar_search_snap_margin"
+        prvandroid:feedbackCount="0"
+        prvandroid:vibrationDuration="@integer/config_vibration_duration"
+        prvandroid:alwaysTrackFinger="true"
+        prvandroid:glowRadius="@*android:dimen/glowpadview_glow_radius"
+        prvandroid:pointDrawable="@*android:drawable/ic_lockscreen_glowdot"/>
+
 </com.android.systemui.SearchPanelView>
