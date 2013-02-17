@@ -81,6 +81,13 @@
                 style="@style/SystemBarPanelSettingsContents"
                 android:text="@string/status_bar_settings_wifi_button"
                 />
+        <Switch
+                android:id="@+id/network_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                />
     </LinearLayout>
     <View style="@style/SystemBarPanelSettingsPanelSeparator" />
 

@@ -36,12 +36,14 @@ import com.android.systemui.statusbar.policy.BrightnessController;
 import com.android.systemui.statusbar.policy.DoNotDisturbController;
 import com.android.systemui.statusbar.policy.ToggleSlider;
 import com.android.systemui.statusbar.policy.VolumeController;
+import com.android.systemui.statusbar.policy.WifiController;
 
 public class SettingsView extends LinearLayout implements View.OnClickListener {
     static final String TAG = "SettingsView";
 
     BrightnessController mBrightness;
     AirplaneModeController mAirplane;
+    WifiController mWifi;
     AutoRotateController mRotate;
     DoNotDisturbController mDoNotDisturb;
     View mRotationLockContainer;
@@ -65,6 +67,9 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
                 (ToggleSlider)findViewById(R.id.brightness));
         mAirplane = new AirplaneModeController(context,
                 (CompoundButton)findViewById(R.id.airplane_checkbox));
+
+        mWifi = new WifiController(context,
+                (CompoundButton)findViewById(R.id.network_checkbox));
         findViewById(R.id.network).setOnClickListener(this);
 
         mRotationLockContainer = findViewById(R.id.rotate);
@@ -88,6 +93,7 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mAirplane.release();
+        mWifi.release();
         mDoNotDisturb.release();
         mRotate.release();
     }
