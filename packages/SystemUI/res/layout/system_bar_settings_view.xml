@@ -23,6 +23,24 @@
         android:orientation="vertical"
         >
 
+    <!-- Brightness -->
+    <LinearLayout style="@style/SystemBarPanelSettingsRow" >
+        <ImageView
+                android:id="@+id/brightness_icon"
+                style="@style/SystemBarPanelSettingsIcon"
+                android:src="@drawable/ic_sysbar_brightness"
+                />
+        <com.android.systemui.statusbar.policy.ToggleSlider
+                android:id="@+id/brightness"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="2dp"
+                systemui:text="@string/status_bar_settings_auto_brightness_label"
+                />
+    </LinearLayout>
+    <View style="@style/SystemBarPanelSettingsPanelSeparator" />
+
     <!-- Airplane mode -->
     <LinearLayout
             android:id="@+id/airplane"
@@ -92,24 +110,6 @@
     <View
             android:id="@+id/rotate_separator"
             style="@style/SystemBarPanelSettingsPanelSeparator" />
-
-    <!-- Brightness -->
-    <LinearLayout style="@style/SystemBarPanelSettingsRow" >
-        <ImageView
-                android:id="@+id/brightness_icon"
-                style="@style/SystemBarPanelSettingsIcon"
-                android:src="@drawable/ic_sysbar_brightness"
-                />
-        <com.android.systemui.statusbar.policy.ToggleSlider
-                android:id="@+id/brightness"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_marginRight="2dp"
-                systemui:text="@string/status_bar_settings_auto_brightness_label"
-                />
-    </LinearLayout>
-    <View style="@style/SystemBarPanelSettingsPanelSeparator" />
 
     <!-- Notifications / Do not disturb -->
     <LinearLayout

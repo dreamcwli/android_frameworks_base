@@ -40,9 +40,9 @@ import com.android.systemui.statusbar.policy.VolumeController;
 public class SettingsView extends LinearLayout implements View.OnClickListener {
     static final String TAG = "SettingsView";
 
+    BrightnessController mBrightness;
     AirplaneModeController mAirplane;
     AutoRotateController mRotate;
-    BrightnessController mBrightness;
     DoNotDisturbController mDoNotDisturb;
     View mRotationLockContainer;
     View mRotationLockSeparator;
@@ -61,6 +61,8 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
 
         final Context context = getContext();
 
+        mBrightness = new BrightnessController(context, null,
+                (ToggleSlider)findViewById(R.id.brightness));
         mAirplane = new AirplaneModeController(context,
                 (CompoundButton)findViewById(R.id.airplane_checkbox));
         findViewById(R.id.network).setOnClickListener(this);
@@ -77,8 +79,6 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
                     }
                 });
 
-        mBrightness = new BrightnessController(context, null,
-                (ToggleSlider)findViewById(R.id.brightness));
         mDoNotDisturb = new DoNotDisturbController(context,
                 (CompoundButton)findViewById(R.id.do_not_disturb_checkbox));
         findViewById(R.id.settings).setOnClickListener(this);
