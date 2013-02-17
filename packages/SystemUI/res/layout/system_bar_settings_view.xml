@@ -91,6 +91,33 @@
     </LinearLayout>
     <View style="@style/SystemBarPanelSettingsPanelSeparator" />
 
+    <!-- Bluetooth -->
+    <LinearLayout
+            android:id="@+id/bluetooth"
+            style="@style/SystemBarPanelSettingsRow"
+            >
+        <ImageView
+                android:id="@+id/bluetooth_icon"
+                style="@style/SystemBarPanelSettingsIcon"
+                android:src="@drawable/ic_sysbar_bluetooth"
+                />
+        <TextView
+                android:id="@+id/bluetooth_label"
+                style="@style/SystemBarPanelSettingsContents"
+                android:text="@string/status_bar_settings_bluetooth"
+                />
+        <Switch
+                android:id="@+id/bluetooth_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                />
+    </LinearLayout>
+    <View
+            android:id="@+id/bluetooth_separator"
+            style="@style/SystemBarPanelSettingsPanelSeparator" />
+
     <!-- Rotation lock -->
     <LinearLayout
             android:id="@+id/rotate"

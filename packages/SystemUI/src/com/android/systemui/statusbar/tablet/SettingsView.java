@@ -17,6 +17,7 @@
 package com.android.systemui.statusbar.tablet;
 
 import android.app.StatusBarManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.UserHandle;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.policy.AirplaneModeController;
 import com.android.systemui.statusbar.policy.AutoRotateController;
+import com.android.systemui.statusbar.policy.BluetoothController2;
 import com.android.systemui.statusbar.policy.BrightnessController;
 import com.android.systemui.statusbar.policy.DoNotDisturbController;
 import com.android.systemui.statusbar.policy.ToggleSlider;
@@ -44,6 +46,7 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
     BrightnessController mBrightness;
     AirplaneModeController mAirplane;
     WifiController mWifi;
+    BluetoothController2 mBluetooth;
     AutoRotateController mRotate;
     DoNotDisturbController mDoNotDisturb;
     View mRotationLockContainer;
@@ -72,6 +75,15 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
                 (CompoundButton)findViewById(R.id.network_checkbox));
         findViewById(R.id.network).setOnClickListener(this);
 
+        if (BluetoothAdapter.getDefaultAdapter() == null) {
+            findViewById(R.id.bluetooth).setVisibility(View.GONE);
+            findViewById(R.id.bluetooth_separator).setVisibility(View.GONE);
+        } else {
+            mBluetooth = new BluetoothController2(context,
+                    (CompoundButton)findViewById(R.id.bluetooth_checkbox));
+            findViewById(R.id.bluetooth).setOnClickListener(this);
+        }
+
         mRotationLockContainer = findViewById(R.id.rotate);
         mRotationLockSeparator = findViewById(R.id.rotate_separator);
         mRotate = new AutoRotateController(context,
@@ -94,6 +106,9 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
         super.onDetachedFromWindow();
         mAirplane.release();
         mWifi.release();
+        if (mBluetooth != null) {
+            mBluetooth.release();
+        }
         mDoNotDisturb.release();
         mRotate.release();
     }
@@ -102,6 +117,9 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.network:
                 onClickNetwork();
+                break;
+            case R.id.bluetooth:
+                onClickBluetooth();
                 break;
             case R.id.settings:
                 onClickSettings();
@@ -117,6 +135,15 @@ public class SettingsView extends LinearLayout implements View.OnClickListener {
     // ----------------------------
     private void onClickNetwork() {
         getContext().startActivityAsUser(new Intent(Settings.ACTION_WIFI_SETTINGS)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                new UserHandle(UserHandle.USER_CURRENT));
+        getStatusBarManager().collapsePanels();
+    }
+
+    // Bluetooth
+    // ----------------------------
+    private void onClickBluetooth() {
+        getContext().startActivityAsUser(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 new UserHandle(UserHandle.USER_CURRENT));
         getStatusBarManager().collapsePanels();
